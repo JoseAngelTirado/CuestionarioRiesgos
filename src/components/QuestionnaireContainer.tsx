@@ -7,6 +7,7 @@ import { QuestionType, ResultType } from '../types';
 import { calculateResults } from '../utils/scoreCalculator';
 import questionData from '../data/questions';
 
+
 const QuestionnaireContainer: React.FC = () => {
   const [questions] = useState<QuestionType[]>(questionData);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(-1);
@@ -65,8 +66,8 @@ const QuestionnaireContainer: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 md:py-20">
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Interactive Questionnaire</h1>
-        <p className="text-gray-600">Answer all questions to get your personalized score</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Calculadora de Riesgos</h1>
+        <p className="text-gray-600">Contesta todas las preguntas para obtener tu puntuacion</p>
       </div>
 
       {showEmailForm && (
@@ -91,7 +92,7 @@ const QuestionnaireContainer: React.FC = () => {
               onClick={handlePreviousQuestion}
               className="px-5 py-2.5 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
             >
-              Back
+              Regresar
             </button>
             
             <button
@@ -103,7 +104,7 @@ const QuestionnaireContainer: React.FC = () => {
                   : 'opacity-50 cursor-not-allowed'
               }`}
             >
-              {currentQuestionIndex === questions.length - 1 ? 'Finish' : 'Next'}
+              {currentQuestionIndex === questions.length - 1 ? 'Finalizar' : 'Siguiente'}
             </button>
           </div>
         </>

@@ -12,9 +12,9 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, totalSteps }) =>
     <div className="w-full max-w-2xl mx-auto mb-8">
       <div className="flex justify-between items-center mb-2">
         <span className="text-sm font-medium text-gray-700">
-          Question {currentStep} of {totalSteps}
+          Pregunta {currentStep} de {totalSteps}
         </span>
-        <span className="text-sm font-medium text-blue-600">{progress}% Complete</span>
+        <span className="text-sm font-medium text-blue-600">{progress}% Completado</span>
       </div>
       <div className="w-full bg-gray-200 rounded-full h-2.5">
         <div 
