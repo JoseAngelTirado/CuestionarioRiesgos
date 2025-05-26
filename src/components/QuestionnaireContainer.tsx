@@ -1,42 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Question from './Question';
 import ProgressBar from './ProgressBar';
-import EmailForm from './EmailForm';
 import Results from './Results';
 import { QuestionType, ResultType } from '../types';
 import { calculateResults } from '../utils/scoreCalculator';
 import questionData from '../data/questions';
 
-
 const QuestionnaireContainer: React.FC = () => {
   const [questions] = useState<QuestionType[]>(questionData);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(-1);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0); // empezamos en 0 directo
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [email, setEmail] = useState<string>('');
-  const [showResults, setShowResults] = useState<boolean>(false);
   const [results, setResults] = useState<ResultType | null>(null);
-  const [showEmailForm, setShowEmailForm] = useState<boolean>(true);
+  const [showResults, setShowResults] = useState<boolean>(false);
 
   const handleSelectOption = (optionId: string) => {
-    if (currentQuestionIndex >= 0) {
-      setAnswers({
-        ...answers,
-        [questions[currentQuestionIndex].id]: optionId,
-      });
-    }
-  };
-
-  const handleEmailSubmit = (submittedEmail: string) => {
-    setEmail(submittedEmail);
-    setShowEmailForm(false);
-    setCurrentQuestionIndex(0);
+    setAnswers({
+      ...answers,
+      [questions[currentQuestionIndex].id]: optionId,
+    });
   };
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      // Calculate results
       const calculatedResults = calculateResults(questions, answers);
       setResults(calculatedResults);
       setShowResults(true);
@@ -46,47 +33,38 @@ const QuestionnaireContainer: React.FC = () => {
   const handlePreviousQuestion = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
-    } else {
-      setShowEmailForm(true);
-      setCurrentQuestionIndex(-1);
     }
   };
 
   const handleRestart = () => {
     setAnswers({});
-    setEmail('');
     setShowResults(false);
-    setShowEmailForm(true);
-    setCurrentQuestionIndex(-1);
+    setCurrentQuestionIndex(0);
   };
 
-  const isOptionSelected = currentQuestionIndex >= 0 && 
+  const isOptionSelected =
     questions[currentQuestionIndex].id in answers;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 md:py-20">
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Calculadora de Riesgos</h1>
-        <p className="text-gray-600">Contesta todas las preguntas para obtener tu puntuacion</p>
+        <p className="text-gray-600">Contesta todas las preguntas para obtener tu puntuación</p>
       </div>
 
-      {showEmailForm && (
-        <EmailForm onSubmit={handleEmailSubmit} />
-      )}
-
-      {!showEmailForm && !showResults && (
+      {!showResults && (
         <>
-          <ProgressBar 
-            currentStep={currentQuestionIndex + 1} 
-            totalSteps={questions.length} 
+          <ProgressBar
+            currentStep={currentQuestionIndex + 1}
+            totalSteps={questions.length}
           />
-          
+
           <Question
             question={questions[currentQuestionIndex]}
             selectedOption={answers[questions[currentQuestionIndex].id] || null}
             onSelectOption={handleSelectOption}
           />
-          
+
           <div className="w-full max-w-2xl mx-auto flex justify-between">
             <button
               onClick={handlePreviousQuestion}
@@ -94,14 +72,12 @@ const QuestionnaireContainer: React.FC = () => {
             >
               Regresar
             </button>
-            
+
             <button
               onClick={handleNextQuestion}
               disabled={!isOptionSelected}
               className={`px-5 py-2.5 bg-blue-600 text-white rounded-lg transition-colors duration-200 ${
-                isOptionSelected 
-                  ? 'hover:bg-blue-700' 
-                  : 'opacity-50 cursor-not-allowed'
+                isOptionSelected ? 'hover:bg-blue-700' : 'opacity-50 cursor-not-allowed'
               }`}
             >
               {currentQuestionIndex === questions.length - 1 ? 'Finalizar' : 'Siguiente'}
@@ -111,10 +87,9 @@ const QuestionnaireContainer: React.FC = () => {
       )}
 
       {showResults && results && (
-        <Results 
-          result={results} 
+        <Results
+          result={results}
           questions={questions}
-          email={email}
           onRestart={handleRestart}
         />
       )}
@@ -123,3 +98,4 @@ const QuestionnaireContainer: React.FC = () => {
 };
 
 export default QuestionnaireContainer;
+

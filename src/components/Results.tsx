@@ -5,11 +5,10 @@ import { Smile, Meh, Frown } from 'lucide-react';
 interface ResultsProps {
   result: ResultType;
   questions: QuestionType[];
-  email: string;
   onRestart: () => void;
 }
 
-const Results: React.FC<ResultsProps> = ({ result, email, onRestart }) => {
+const Results: React.FC<ResultsProps> = ({ result, onRestart }) => {
   const { percentageScore, totalScore, maxPossibleScore } = result;
 
   // Categoría con clases y emoji
@@ -72,7 +71,6 @@ const Results: React.FC<ResultsProps> = ({ result, email, onRestart }) => {
         <div className="text-left mb-6">
           <h3 className="text-lg font-medium text-gray-900 mb-3">Resultados</h3>
           <p className="text-gray-600 mb-4">
-            Email: <span className="font-medium">{email}</span>
           </p>
           <p className="text-gray-600 mb-4">
             Puntuación: <span className="font-medium">{totalScore} de {maxPossibleScore}</span>
